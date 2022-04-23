@@ -30,6 +30,7 @@ public class DatabaseSearch extends JFrame implements ActionListener {
     Map<String, Integer> pokemonIndex;
     TreeMap<Integer, List<Integer>> indexTree;
     static String dataFileLocation = "src/main/pokemon.data";
+    static String indexFileLocation = "src/main/pokemon.index";
 
     /*
     Constructor for GUI objects.
@@ -230,7 +231,7 @@ public class DatabaseSearch extends JFrame implements ActionListener {
                 return;
             }
             int number = pokemonIndex.get(name);
-            DatabaseEngine.Pokemon pokemon = readBinaryFile(dataFileLocation, number);
+            DatabaseEngine.Pokemon pokemon = readBinaryFile(dataFileLocation, indexFileLocation, number);
             if (pokemon != null) {
                 addRow(pokemon);
             }
@@ -253,7 +254,7 @@ public class DatabaseSearch extends JFrame implements ActionListener {
                 if (indexTree.containsKey(i)) {
                     List<Integer> numbers = indexTree.get(i);
                     for (int number : numbers) {
-                        pokemon = readBinaryFile(dataFileLocation, number);
+                        pokemon = readBinaryFile(dataFileLocation, indexFileLocation, number);
                         if (pokemon != null) {
                             rowAdded = true;
                             addRow(pokemon);
@@ -282,7 +283,7 @@ public class DatabaseSearch extends JFrame implements ActionListener {
      */
     private void populateTree() {
         indexTree = new TreeMap<>();
-        List<DatabaseEngine.Pokemon> pokemonList = DatabaseEngine.readEntireBinaryFile(dataFileLocation);
+        List<DatabaseEngine.Pokemon> pokemonList = DatabaseEngine.readEntireBinaryFile(dataFileLocation, indexFileLocation);
         List<Integer> numbers;
         if (pokemonList != null) {
             for (DatabaseEngine.Pokemon pokemon: pokemonList) {
@@ -303,14 +304,14 @@ public class DatabaseSearch extends JFrame implements ActionListener {
      */
     private void populateHashMap(){
         pokemonIndex = new DatabaseHashMap<>();
-        List<DatabaseEngine.Pokemon> pokemonList = DatabaseEngine.readEntireBinaryFile(dataFileLocation);
+        List<DatabaseEngine.Pokemon> pokemonList = DatabaseEngine.readEntireBinaryFile(dataFileLocation, indexFileLocation);
         if (pokemonList != null) {
             pokemonList.forEach(e -> pokemonIndex.put(e.name(), e.number()));
         }
     }
 
     public static void main(String[] args) {
+        DatabaseEngine.writeBinaryFile(dataFileLocation, indexFileLocation, DatabaseImportData.readFile("src/main/Pokemon.csv"));
         DatabaseSearch db = new DatabaseSearch();
-        DatabaseEngine.writeBinaryFile(dataFileLocation, DatabaseImportData.readFile("src/main/Pokemon.csv"));
     }
 }

@@ -12,7 +12,10 @@ import java.util.List;
  * @version 0.1
  */
 public class DatabaseImportData {
-    
+
+    static String dataFileLocation = "src/main/pokemon.data";
+    static String indexFileLocation = "src/main/pokemon.index";
+
     /*
     Reads entire CSV file.
     @param path  Filepath for file reader to use.
@@ -33,5 +36,9 @@ public class DatabaseImportData {
             e.printStackTrace();
         }
         return fileData;
+    }
+
+    public static void writeBinary(List<String> fileData){
+        DatabaseEngine.writeBinaryFile(dataFileLocation, dataFileLocation, fileData);
     }
 }

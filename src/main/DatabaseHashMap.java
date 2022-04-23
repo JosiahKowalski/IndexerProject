@@ -22,7 +22,6 @@ public class DatabaseHashMap<K,V> extends HashMap<K,V> implements Map<K,V> {
     @SuppressWarnings("unchecked")
     private void construct(){
         entries = new ArrayList[arrayLength];
-//        Arrays.setAll(entries, element -> new ArrayList<>());
     }
 
     static class Entry<K,V>{
